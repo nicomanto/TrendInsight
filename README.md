@@ -1,2 +1,2 @@
 # TrendInsight
-Twitter bot that shows trend insights
+Twitter bot that shows trends insights
