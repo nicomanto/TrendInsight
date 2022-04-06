@@ -27,10 +27,20 @@ func main() {
 	// create twitter client
 	support.SetupOauth1TwitterClient()
 
+	mostTrend, err := controllers.GetMostPopularTrendInsight(1, nil)
+	if err != nil {
+		logrus.Errorln(err)
+	}
+	mostTweet, err := controllers.GetMostTweetByHashtag("#"+mostTrend.Name, controllers.ResultTypePopular)
+	if err != nil {
+		logrus.Errorln(err)
+	}
+	logrus.Info(mostTweet)
+
 	// post tweet
-	if err := controllers.PostTweet("Tweet!", nil); err != nil {
+	/*if err := controllers.PostTweet("Tweet!", nil); err != nil {
 		logrus.Errorln(err)
 	} else {
 		logrus.Infoln("Twitted successfully")
-	}
+	}*/
 }
