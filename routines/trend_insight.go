@@ -1,8 +1,8 @@
 package routines
 
 import (
-	"TrendInsight/controllers"
 	"TrendInsight/models"
+	"TrendInsight/support"
 	"context"
 	"strings"
 	"sync"
@@ -12,13 +12,14 @@ import (
 )
 
 // InitTrendInsightRoutine setup trend insight goroutine with the increment of waiting group
-func InitTrendInsightRoutine(ctx context.Context, group *sync.WaitGroup, interval time.Duration) {
+func InitTrendInsightRoutine(ctx context.Context, group *sync.WaitGroup, interval time.Duration, userToNotify []string) {
+	logrus.Infoln("Start new trend insight routine")
 	group.Add(1)
-	go trendInsight(ctx, group, interval)
+	go trendInsight(ctx, group, interval, userToNotify)
 }
 
 // trendInsight perform trend insight logic (fetch most popular hashtag -> fetch most popular tweet on given hashtag -> post insight)
-func trendInsight(ctx context.Context, group *sync.WaitGroup, interval time.Duration) {
+func trendInsight(ctx context.Context, group *sync.WaitGroup, interval time.Duration, userToNotify []string) {
 	ticker := time.NewTicker(interval)
 	defer func() {
 		group.Done()
@@ -28,21 +29,24 @@ func trendInsight(ctx context.Context, group *sync.WaitGroup, interval time.Dura
 		select {
 		case <-ticker.C:
 			// get most popular hashtag
-			mostTrend, err := controllers.GetMostPopularTrend(controllers.WoieIDItaly, nil)
+			mostTrend, err := support.GetMostPopularTrend(support.WoieIDItaly, nil)
 			if err != nil {
 				logrus.Errorln(err)
+				support.SendErrorMail(userToNotify, err.Error())
 				continue
 			}
 			// get most popular tweet
-			mostTweet, err := controllers.GetMostTweet(mostTrend.Name, controllers.ResultTypePopular)
+			mostTweet, err := support.GetMostTweet(mostTrend.Name, support.ResultTypePopular)
 			if err != nil {
 				logrus.Errorln(err)
+				support.SendErrorMail(userToNotify, err.Error())
 				continue
 			}
 			// create tweet msg
 			timestampTweet, err := mostTweet.CreatedAtTime()
 			if err != nil {
 				logrus.Errorln(err)
+				support.SendErrorMail(userToNotify, err.Error())
 				continue
 			}
 			trendName := mostTrend.Name
@@ -63,8 +67,9 @@ func trendInsight(ctx context.Context, group *sync.WaitGroup, interval time.Dura
 			}
 			tweetString := tweet.PostedTweetToString()
 			// post tweet
-			if err := controllers.PostTweet(tweetString, nil); err != nil {
+			if err := support.PostTweet(tweetString, nil); err != nil {
 				logrus.Errorln(err)
+				support.SendErrorMail(userToNotify, err.Error())
 			} else {
 				logrus.Infoln("Twitted successfully")
 			}
