@@ -32,7 +32,7 @@ In order to run bot, you need to set these configurations:
     "mail":{
         "sender": "dummyEmail", # email that send errors reports
         "sender_pwd": "pwd", # email's password
-        "recipiens": ["dummyEmail"] # recipiens that will receive  errors reports
+        "recipiens": ["dummyEmail"] # recipiens that will receive errors reports
     }
 }
 ```
