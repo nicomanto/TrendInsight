@@ -12,14 +12,14 @@ import (
 )
 
 // InitTrendInsightRoutine setup trend insight goroutine with the increment of waiting group
-func InitTrendInsightRoutine(ctx context.Context, group *sync.WaitGroup, interval time.Duration, userToNotify []string) {
+func InitTrendInsightRoutine(ctx context.Context, group *sync.WaitGroup, interval time.Duration, userToNotify []string, mostPopularTweetSearchLang *string) {
 	logrus.Infoln("Start new trend insight routine")
 	group.Add(1)
-	go trendInsight(ctx, group, interval, userToNotify)
+	go trendInsight(ctx, group, interval, userToNotify, mostPopularTweetSearchLang)
 }
 
 // trendInsight perform trend insight logic (fetch most popular hashtag -> fetch most popular tweet on given hashtag -> post insight)
-func trendInsight(ctx context.Context, group *sync.WaitGroup, interval time.Duration, userToNotify []string) {
+func trendInsight(ctx context.Context, group *sync.WaitGroup, interval time.Duration, userToNotify []string, mostPopularTweetSearchLang *string) {
 	ticker := time.NewTicker(interval)
 	defer func() {
 		group.Done()
@@ -37,8 +37,7 @@ func trendInsight(ctx context.Context, group *sync.WaitGroup, interval time.Dura
 				continue
 			}
 			// get most popular tweet
-			itLang := support.ItalyLang
-			mostTweet, err := support.GetMostTweet(mostTrend.Name, &itLang, support.ResultTypePopular, true)
+			mostTweet, err := support.GetMostTweet(mostTrend.Name, mostPopularTweetSearchLang, support.ResultTypePopular, true)
 			if err != nil {
 				logrus.Errorln(err)
 				support.SendErrorMail(userToNotify, err.Error())
