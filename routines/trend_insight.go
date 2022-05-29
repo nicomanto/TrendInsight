@@ -54,6 +54,7 @@ func trendInsight(ctx context.Context, group *sync.WaitGroup, interval time.Dura
 			if !strings.HasPrefix(trendName, "#") {
 				trendName = "#" + trendName
 			}
+			// create posted tweet
 			tweet := models.PostedTweet{
 				TrendingTweet: models.TrendingTweet{
 					Hashtag: trendName,
@@ -62,9 +63,16 @@ func trendInsight(ctx context.Context, group *sync.WaitGroup, interval time.Dura
 					Author:  mostTweet.User.Name,
 					Ts:      timestampTweet.UTC(),
 					Likes:   mostTweet.FavoriteCount,
-					URL:     mostTweet.Entities.Urls[0].ExpandedURL,
+					URL:     "URL not available",
 				},
 				TsPosted: time.Now().UTC(),
+			}
+			// check if URL is present
+			if len(mostTweet.Entities.Urls) > 0 {
+				tweet.URL = mostTweet.Entities.Urls[0].ExpandedURL
+			}
+			if tweet.URL == "URL not available" && len(mostTweet.Entities.Media) > 0 {
+				tweet.URL = mostTweet.Entities.Media[0].URL
 			}
 			tweetString := tweet.PostedTweetToString()
 			// post tweet
