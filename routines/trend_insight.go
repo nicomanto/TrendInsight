@@ -28,6 +28,7 @@ func trendInsight(ctx context.Context, group *sync.WaitGroup, interval time.Dura
 	for {
 		select {
 		case <-ticker.C:
+			logrus.Infoln("Trend insight routine run at " + time.Now().UTC().Format(time.RFC822))
 			// get most popular hashtag
 			mostTrend, err := support.GetMostPopularTrend(support.WoieIDItaly, nil)
 			if err != nil {
@@ -36,7 +37,8 @@ func trendInsight(ctx context.Context, group *sync.WaitGroup, interval time.Dura
 				continue
 			}
 			// get most popular tweet
-			mostTweet, err := support.GetMostTweet(mostTrend.Name, support.ResultTypePopular)
+			itLang := support.ItalyLang
+			mostTweet, err := support.GetMostTweet(mostTrend.Name, &itLang, support.ResultTypePopular, true)
 			if err != nil {
 				logrus.Errorln(err)
 				support.SendErrorMail(userToNotify, err.Error())

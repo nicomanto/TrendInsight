@@ -39,7 +39,7 @@ func main() {
 	// init trend insight go routine
 	waitingGroup := &sync.WaitGroup{}
 	ctxTrendInsight, ctxTrendInsightCF := context.WithCancel(context.Background())
-	routines.InitTrendInsightRoutine(ctxTrendInsight, waitingGroup, viper.GetDuration("trend_insight_post_minute_interval")*time.Minute, viper.GetStringSlice("mail.recipiens"))
+	routines.InitTrendInsightRoutine(ctxTrendInsight, waitingGroup, viper.GetDuration("trend_insight_post_day_interval")*24*time.Hour, viper.GetStringSlice("mail.recipiens"))
 	// Wait for interrupt signal to gracefully shutdown
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)

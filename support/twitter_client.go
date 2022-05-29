@@ -20,6 +20,13 @@ const (
 	WoieIDWorld WoeIDType = 1
 )
 
+type Lang string
+
+const (
+	ItalyLang   Lang = "it"
+	EnglandLang Lang = "en"
+)
+
 var twitterClient *twitter.Client
 
 // SetupOauth1TwitterClient setup twitter client with oauth1 configuration
@@ -56,12 +63,17 @@ func GetMostPopularTrend(woeid WoeIDType, params *twitter.TrendsPlaceParams) (*t
 	return &mostPopularTrend, nil
 }
 
-// GetMostTweet return the most liked tweet by popularity, recently or mixed
-func GetMostTweet(query string, resultType SearchResultType) (*twitter.Tweet, error) {
-	tweetSearch, _, err := twitterClient.Search.Tweets(&twitter.SearchTweetParams{
-		ResultType: string(resultType),
-		Query:      query,
-	})
+// GetMostTweet return the most liked tweet by popularity, recently or mixed in the given language if needed
+func GetMostTweet(query string, resultLang *Lang, resultType SearchResultType, includeEntities bool) (*twitter.Tweet, error) {
+	searchParams := twitter.SearchTweetParams{
+		ResultType:      string(resultType),
+		Query:           query,
+		IncludeEntities: &includeEntities,
+	}
+	if resultLang != nil {
+		searchParams.Lang = string(*resultLang)
+	}
+	tweetSearch, _, err := twitterClient.Search.Tweets(&searchParams)
 	if err != nil {
 		return nil, err
 	}
