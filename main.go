@@ -44,7 +44,7 @@ func main() {
 		lang := viper.GetString("bot.most_popular_tweet_lang")
 		mostPopularTweetLang = &lang
 	}
-	routines.InitTrendInsightRoutine(ctxTrendInsight, waitingGroup, viper.GetDuration("bot.trend_insight_post_day_interval")*1*time.Minute, viper.GetStringSlice("mail.recipiens"), mostPopularTweetLang)
+	routines.InitTrendInsightRoutine(ctxTrendInsight, waitingGroup, viper.GetDuration("bot.trend_insight_post_day_interval")*24*time.Hour, viper.GetStringSlice("mail.recipiens"), mostPopularTweetLang)
 	// Wait for interrupt signal to gracefully shutdown
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
