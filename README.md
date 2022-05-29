@@ -1,5 +1,5 @@
 # TrendInsight
-Twitter bot that shows trends insights
+Twitter bot that shows trends insights about popular tweets
 
 ## Introduction
 You can find bot at this page: [https://twitter.com/insight_trend](https://twitter.com/insight_trend)
@@ -26,7 +26,7 @@ In order to run bot, you need to set these configurations:
     }, 
     "bot":{
         "trend_insight_post_day_interval": 1, #interval that bot used to post tweets
-        "need_most_popular_tweet_lang": true, #if bot search for most populare tweet based on language
+        "need_most_popular_tweet_lang": true, #if bot search for most popular tweet based on language
         "most_popular_tweet_lang": "it" #language used if need_most_popular_tweet_lang is true
     },
     "mail":{
