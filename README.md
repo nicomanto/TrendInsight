@@ -47,5 +47,5 @@ For `most_popular_tweet_lang` see [https://en.wikipedia.org/wiki/List_of_ISO_639
 - [Go](https://go.dev/)
 - [Gomail](https://github.com/go-gomail/gomail)
 - [Go-twitter](https://github.com/dghubble/go-twitter)
-- [OAtuh1](https://github.com/dghubble/oauth1)
+- [OAuth1](https://github.com/dghubble/oauth1)
 - [Twitter API documentation](https://developer.twitter.com/en/docs/twitter-api)
