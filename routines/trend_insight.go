@@ -13,7 +13,7 @@ import (
 
 // InitTrendInsightRoutine setup trend insight goroutine with the increment of waiting group
 func InitTrendInsightRoutine(ctx context.Context, group *sync.WaitGroup, interval time.Duration, userToNotify []string, mostPopularTweetSearchLang *string) {
-	logrus.Infoln("Start new trend insight routine")
+	logrus.Infoln("Start new TrendInsight routine")
 	group.Add(1)
 	go trendInsight(ctx, group, interval, userToNotify, mostPopularTweetSearchLang)
 }
@@ -22,13 +22,13 @@ func InitTrendInsightRoutine(ctx context.Context, group *sync.WaitGroup, interva
 func trendInsight(ctx context.Context, group *sync.WaitGroup, interval time.Duration, userToNotify []string, mostPopularTweetSearchLang *string) {
 	ticker := time.NewTicker(interval)
 	defer func() {
-		logrus.Warn("Trend insight has stopped")
+		logrus.Warn("TrendInsight has stopped")
 		group.Done()
 	}()
 	for {
 		select {
 		case <-ticker.C:
-			logrus.Infoln("Trend insight routine run at " + time.Now().UTC().Format(time.RFC822))
+			logrus.Infoln("TrendInsight routine run at " + time.Now().UTC().Format(time.RFC822))
 			// get most popular hashtag
 			mostTrend, err := support.GetMostPopularTrend(support.WoieIDItaly, nil)
 			if err != nil {

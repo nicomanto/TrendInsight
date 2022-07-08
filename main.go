@@ -49,8 +49,8 @@ func main() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
 	<-quit
-	logrus.Infoln("Shutting down")
 	// stop trend insight and wait
 	ctxTrendInsightCF()
 	waitingGroup.Wait()
+	logrus.Infoln("Shutting down")
 }
