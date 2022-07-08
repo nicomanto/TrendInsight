@@ -22,8 +22,8 @@ func InitTrendInsightRoutine(ctx context.Context, group *sync.WaitGroup, interva
 func trendInsight(ctx context.Context, group *sync.WaitGroup, interval time.Duration, userToNotify []string, mostPopularTweetSearchLang *string) {
 	ticker := time.NewTicker(interval)
 	defer func() {
-		group.Done()
 		logrus.Warn("Trend insight has stopped")
+		group.Done()
 	}()
 	for {
 		select {
