@@ -4,7 +4,6 @@ import (
 	"TrendInsight/models"
 	"TrendInsight/support"
 	"context"
-	"fmt"
 	"strings"
 	"sync"
 	"time"
@@ -21,7 +20,6 @@ func InitTrendInsightRoutine(ctx context.Context, group *sync.WaitGroup, interva
 
 // trendInsight perform trend insight logic (fetch most popular hashtag -> fetch most popular tweet on given hashtag -> post insight)
 func trendInsight(ctx context.Context, group *sync.WaitGroup, interval time.Duration, userToNotify []string, mostPopularTweetSearchLang *string) {
-	fmt.Printf("%d", "scsa", "DSD")
 	ticker := time.NewTicker(interval)
 	defer func() {
 		logrus.Warn("TrendInsight has stopped")
