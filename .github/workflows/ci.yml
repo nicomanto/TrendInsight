@@ -17,7 +17,6 @@ jobs:
           
       # Cache go
       - name: Cache Go build and mod
-        id: go-build cache
         uses: actions/cache@v3
         with:
           path: |
@@ -39,7 +38,7 @@ jobs:
         run: go test ./... -v
 
       - name: Cache Build
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: TrendInsight
           key: ${{ runner.os }}-TrendInsight-${{ hashFiles('TrendInsight') }}
