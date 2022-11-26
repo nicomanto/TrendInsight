@@ -67,5 +67,4 @@ jobs:
           aws_region: ${{ secrets.AWS_REGION }}
           function_name: trend-insight-publisher
           zip_file: TrendInsight.zip
-          dry_run: true
 
