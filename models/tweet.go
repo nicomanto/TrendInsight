@@ -22,7 +22,7 @@ type PostedTweet struct {
 
 // PostedTweetToString convert PostedTweet struct to string
 func (p *PostedTweet) PostedTweetToString() string {
-	return fmt.Sprintf("%s\nTweet: %s\nAuthor: %s\nLikes: %d\nOriginal tweet: %s\nCreated at: %s",
+	return fmt.Sprintf("%s\nTweetino: %s\nAuthor: %s\nLikes: %d\nOriginal tweet: %s\nCreated at: %s",
 		p.Hashtag,
 		p.Text[:(len(p.Text)/2)]+"...",
 		p.Author,
