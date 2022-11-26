@@ -1,9 +1,9 @@
-name: CI
-
+name: build-test-delploy-lambda
 on: push
 
 jobs:
-  test:
+  build-test:
+    name: build and test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -26,13 +26,36 @@ jobs:
           restore-keys: ${{ runner.os }}-go-
           
       # Run build
-      - name: Run build
+      - name: Build
         run: go build 
         
       # Run vet
-      - name: Run vet
+      - name: Go vet
         run: go vet ./...
       
       # Run testing on the code
-      - name: Run testing
+      - name: Test
         run: go test ./... -v
+
+      - name: Cache Build
+        uses: actions/cache@v2
+        with:
+          path: TrendInsight
+          key: ${{ runner.os }}-TrendInsight-${{ hashFiles('TrendInsight') }}
+
+  delploy-lambda:
+    name: deploy lambda function
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: AWS Lambda Deploy
+        if: github.ref == 'refs/heads/main'
+        uses: appleboy/lambda-action@v0.1.5
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          function_name: trend-insight-publisher
+          zip_file: TrendInsight.zip
+          dry_run: true
+
