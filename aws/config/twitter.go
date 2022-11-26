@@ -41,7 +41,7 @@ const (
 )
 
 func NewTwitterClientConfig(parameterStore ParameterStore) (*TwitterClientConfigParam, error) {
-	twitterClientParams, err := parameterStore.GetParametersByPath(TWITTER_CONFIG_ROOT, false, 5)
+	twitterClientParams, err := parameterStore.GetParametersByPath(TWITTER_CONFIG_ROOT, true, 5)
 	if err != nil {
 		return nil, err
 	}

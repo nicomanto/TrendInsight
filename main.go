@@ -18,52 +18,48 @@ var userToNotifyInError string
 
 func main() {
 	// LAMBDA EXECUTION
-	lambda.Start(HandleRequest)
+	lambda.Start(handleLamdaEvent)
 }
 
-func setupConfig() error {
+func init() {
 	var err error
 	// setup parameter store client
 	parameterStoreClient, err = config.NewParameterStore()
 	if err != nil {
-		return err
+		panic(err)
 	}
 	// setup twitter client
 	twitterConfig, err := config.NewTwitterClientConfig(*parameterStoreClient)
 	if err != nil {
-		return err
+		panic(err)
 	}
 	twitterClient = config.NewOauth1TwitterClient(*twitterConfig)
 	// setup gomail client
 	gomailConfig, err := config.NewMailClientConfig(*parameterStoreClient)
 	if err != nil {
-		return err
+		panic(err)
 	}
 	gomailClient = config.NewSetupMailMsgAndDialer(*gomailConfig)
 	// setup bot config
 	botConfig, err = config.NewBotConfig(*parameterStoreClient)
 	if err != nil {
-		return err
+		panic(err)
 	}
 	// get error recipient
-	userToNotifyInError, err = parameterStoreClient.GetParameterValue(config.MAIL_CONFIG_ROOT+config.MAIL_RECIPIENTS_KEY, false)
+	userToNotifyInError, err = parameterStoreClient.GetParameterValue(config.MAIL_CONFIG_ROOT+config.MAIL_RECIPIENTS_KEY, true)
 	if err != nil {
-		return err
+		panic(err)
 	}
-	return nil
 }
 
-func HandleRequest() error {
-	if err := setupConfig(); err != nil {
-		return err
-	}
+func handleLamdaEvent() (*models.LambdaResponse, error) {
 	// tweet!
 	logrus.Infoln("TrendInsight run at " + time.Now().UTC().Format(time.RFC822))
 	// get most popular hashtag
 	mostTrend, err := twitterClient.GetMostPopularTrend(config.WoieIDItaly, nil)
 	if err != nil {
 		gomailClient.SendErrorMail([]string{userToNotifyInError}, err.Error())
-		return err
+		return nil, err
 	}
 	// get most popular tweet
 	var mostPopularTweetLang *string
@@ -73,13 +69,13 @@ func HandleRequest() error {
 	mostTweet, err := twitterClient.GetMostTweet(mostTrend.Name, mostPopularTweetLang, config.ResultTypePopular, true)
 	if err != nil {
 		gomailClient.SendErrorMail([]string{userToNotifyInError}, err.Error())
-		return err
+		return nil, err
 	}
 	// create tweet msg
 	timestampTweet, err := mostTweet.CreatedAtTime()
 	if err != nil {
 		gomailClient.SendErrorMail([]string{userToNotifyInError}, err.Error())
-		return err
+		return nil, err
 	}
 	trendName := mostTrend.Name
 	if !strings.HasPrefix(trendName, "#") {
@@ -109,8 +105,7 @@ func HandleRequest() error {
 	// post tweet
 	if err := twitterClient.PostTweet(tweetString, nil); err != nil {
 		gomailClient.SendErrorMail([]string{userToNotifyInError}, err.Error())
-		return err
+		return nil, err
 	}
-	logrus.Infoln("Twitted successfully")
-	return nil
+	return &models.LambdaResponse{Message: "Twitted successfully", Status: 200}, nil
 }

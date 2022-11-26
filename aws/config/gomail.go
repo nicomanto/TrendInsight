@@ -28,7 +28,7 @@ type GoMail struct {
 }
 
 func NewMailClientConfig(parameterStore ParameterStore) (*MailClientConfigParam, error) {
-	mailClientConfig, err := parameterStore.GetParametersByPath(MAIL_CONFIG_ROOT, false, 3)
+	mailClientConfig, err := parameterStore.GetParametersByPath(MAIL_CONFIG_ROOT, true, 3)
 	if err != nil {
 		return nil, err
 	}

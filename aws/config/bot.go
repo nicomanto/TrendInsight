@@ -24,7 +24,7 @@ func NewBotConfig(parameterStore ParameterStore) (*BotConfigParam, error) {
 	}
 	config := BotConfigParam{}
 	if val, ok := botClientConfigParam[BOT_NEED_TWEET_LANG_KEY]; ok {
-		if v, e := strconv.ParseBool(val); e != nil {
+		if v, e := strconv.ParseBool(val); e == nil {
 			config.NeedTweetLang = v
 		} else {
 			return nil, fmt.Errorf("cannot parse bool value of %s: %v", BOT_NEED_TWEET_LANG_KEY, e)
