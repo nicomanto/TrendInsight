@@ -14,7 +14,7 @@ type ParameterStore struct {
 }
 
 func NewParameterStore() (*ParameterStore, error) {
-	cfg, err := config.LoadDefaultConfig(context.TODO())
+	cfg, err := config.LoadDefaultConfig(context.Background())
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +25,7 @@ func NewParameterStore() (*ParameterStore, error) {
 }
 
 func (ps *ParameterStore) GetParametersByPath(path string, decrypt bool, maxResult int32) (map[string]string, error) {
-	params, err := ps.client.GetParametersByPath(context.TODO(), &ssm.GetParametersByPathInput{
+	params, err := ps.client.GetParametersByPath(context.Background(), &ssm.GetParametersByPathInput{
 		WithDecryption: &decrypt,
 		Path:           &path,
 		MaxResults:     &maxResult,
@@ -45,7 +45,7 @@ func (ps *ParameterStore) GetParametersByPath(path string, decrypt bool, maxResu
 }
 
 func (ps *ParameterStore) GetParameterValue(name string, withDecryption bool) (string, error) {
-	results, err := ps.client.GetParameter(context.TODO(), &ssm.GetParameterInput{
+	results, err := ps.client.GetParameter(context.Background(), &ssm.GetParameterInput{
 		Name:           &name,
 		WithDecryption: &withDecryption,
 	})
