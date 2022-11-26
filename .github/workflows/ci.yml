@@ -2,8 +2,8 @@ name: build-test-delploy-lambda
 on: push
 
 jobs:
-  build-test:
-    name: build and test
+  build-tests:
+    name: build and tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -37,7 +37,7 @@ jobs:
       - name: Test
         run: go test ./... -v
 
-      - name: Cache Build
+      - name: Cache build
         uses: actions/cache@v3
         with:
           path: TrendInsight
@@ -46,10 +46,20 @@ jobs:
   delploy-lambda:
     name: deploy lambda function
     runs-on: ubuntu-latest
+    needs: build-tests
+    if: github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Restore build
+        uses: actions/cache@v3
+        with:
+          path: TrendInsight
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-TrendInsight-
+      - name: Zip build
+        run: zip TrendInsight.zip TrendInsight
       - name: AWS Lambda Deploy
-        if: github.ref == 'refs/heads/main'
         uses: appleboy/lambda-action@v0.1.5
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
