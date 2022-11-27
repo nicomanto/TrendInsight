@@ -16,3 +16,7 @@
 
 # Configuration file
 config.json
+
+# Executable code and zip for lambda
+TrendInsight
+TrendInsight.zip

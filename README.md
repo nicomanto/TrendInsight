@@ -13,6 +13,22 @@ Likes: 2513
 Original tweet: tweet's link
 Created at: 28 May 22 21:05 UTC
 ```
+
+## Folders structure
+- **models**: models that bot used
+- **config**: services configurations (bot,gomail,parameter_store,twitter client)
+
+## Technology
+- [Go](https://go.dev/)
+- [Gomail](https://github.com/go-gomail/gomail)
+- [Go-twitter](https://github.com/dghubble/go-twitter)
+- [OAuth1](https://github.com/dghubble/oauth1)
+- [Twitter API documentation](https://developer.twitter.com/en/docs/twitter-api)
+- [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
+- [AWS System Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html)
+- [AWS Event Bridge](https://aws.amazon.com/it/eventbridge/)
+
+
 ## Configuration
 In order to run bot, you need to set these configurations:
 ```
@@ -38,14 +54,13 @@ In order to run bot, you need to set these configurations:
 ```
 For `most_popular_tweet_lang` see [https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
 
-## Folders structure
-- **models**: models that bot used
-- **routines**: go routine configuration
-- **support**: externale service like twitter apis
+## AWS setup
+Bot is a **Lambda** function that is invoked by a **crono scheduler in Event Bridge service**. In order to run lambda must have access to **System Manager** service, in order to pull *twitter client*, *gomail client* and *bot* **configurations** from **Parameter Store**.
 
-## Technology
-- [Go](https://go.dev/)
-- [Gomail](https://github.com/go-gomail/gomail)
-- [Go-twitter](https://github.com/dghubble/go-twitter)
-- [OAuth1](https://github.com/dghubble/oauth1)
-- [Twitter API documentation](https://developer.twitter.com/en/docs/twitter-api)
+## Deploy
+New lambda source code will be deployed by a *push* on the *main* branch from a GitHub Action (if code pass all tests!). 
+
+GitHub Action required:
+ - AWS_ACCESS_KEY_ID
+ - AWS_SECRET_ACCESS_KEY
+ - AWS_REGION
