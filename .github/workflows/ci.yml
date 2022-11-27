@@ -30,6 +30,7 @@ jobs:
         run: go test ./... -v
       # Cache build for deploy-lambda job
       - name: Cache build
+        if: github.ref == 'refs/heads/main'
         uses: actions/cache@v3
         with:
           path: TrendInsight
