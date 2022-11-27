@@ -49,7 +49,7 @@ jobs:
         with:
           path: TrendInsight
           key: ${{ runner.os }}-TrendInsight-${{ hashFiles('TrendInsight') }}
-          restore-keys: ${{ runner.os }}-TrendInsight-${{ hashFiles('TrendInsight') }}
+          restore-keys: ${{ runner.os }}-TrendInsight-
       # Zip build for lambda push
       - name: Zip build
         run: zip TrendInsight.zip TrendInsight
