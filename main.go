@@ -54,6 +54,7 @@ func init() {
 
 func handleLamdaEvent() (*models.LambdaResponse, error) {
 	// tweet!
+	logrus.Infoln("testino")
 	logrus.Infoln("TrendInsight run at " + time.Now().UTC().Format(time.RFC822))
 	// get most popular hashtag
 	mostTrend, err := twitterClient.GetMostPopularTrend(config.WoieIDItaly, nil)
