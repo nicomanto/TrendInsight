@@ -13,6 +13,7 @@ type ParameterStore struct {
 	client *ssm.Client
 }
 
+// NewParameterStore create new parameter store client
 func NewParameterStore() (*ParameterStore, error) {
 	cfg, err := config.LoadDefaultConfig(context.Background())
 	if err != nil {
@@ -24,6 +25,8 @@ func NewParameterStore() (*ParameterStore, error) {
 	}, nil
 }
 
+// GetParametersByPath get all parameters under specified path recursively.
+// for example if it is required /a path, function also return /a/b and /a/c parameters
 func (ps *ParameterStore) GetParametersByPath(path string, decrypt bool, maxResult int32) (map[string]string, error) {
 	params, err := ps.client.GetParametersByPath(context.Background(), &ssm.GetParametersByPathInput{
 		WithDecryption: &decrypt,
@@ -44,6 +47,7 @@ func (ps *ParameterStore) GetParametersByPath(path string, decrypt bool, maxResu
 	return returnedParams, nil
 }
 
+// GetParameterValue return valure of the specified parameter key
 func (ps *ParameterStore) GetParameterValue(name string, withDecryption bool) (string, error) {
 	results, err := ps.client.GetParameter(context.Background(), &ssm.GetParameterInput{
 		Name:           &name,

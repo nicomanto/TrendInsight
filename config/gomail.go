@@ -27,6 +27,7 @@ type GoMail struct {
 	msg    *gomail.Message
 }
 
+// NewMailClientConfig setup gomail configuration from parameter store
 func NewMailClientConfig(parameterStore ParameterStore) (*MailClientConfigParam, error) {
 	mailClientConfig, err := parameterStore.GetParametersByPath(MAIL_CONFIG_ROOT, true, 3)
 	if err != nil {

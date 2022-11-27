@@ -1,7 +1,7 @@
 package main
 
 import (
-	"TrendInsight/aws/config"
+	"TrendInsight/config"
 	"TrendInsight/models"
 	"strings"
 	"time"

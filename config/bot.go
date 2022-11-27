@@ -17,6 +17,7 @@ type BotConfigParam struct {
 	NeedTweetLang bool
 }
 
+// NewBotConfig setup bot configuration from parameter store
 func NewBotConfig(parameterStore ParameterStore) (*BotConfigParam, error) {
 	botClientConfigParam, err := parameterStore.GetParametersByPath(BOOT_CONFIG_ROOT, false, 2)
 	if err != nil {

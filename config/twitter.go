@@ -40,6 +40,11 @@ const (
 	WoieIDWorld WoeIDType = 1
 )
 
+type Twitter struct {
+	client *twitter.Client
+}
+
+// NewTwitterClientConfig setup twitter client configuration from parameter store
 func NewTwitterClientConfig(parameterStore ParameterStore) (*TwitterClientConfigParam, error) {
 	twitterClientParams, err := parameterStore.GetParametersByPath(TWITTER_CONFIG_ROOT, true, 5)
 	if err != nil {
@@ -72,10 +77,6 @@ func NewTwitterClientConfig(parameterStore ParameterStore) (*TwitterClientConfig
 		return nil, fmt.Errorf("failed to find parameter %s", TWITTER_BEARER_TOKEN_KEY)
 	}
 	return &config, nil
-}
-
-type Twitter struct {
-	client *twitter.Client
 }
 
 // NewOauth1TwitterClient setup twitter client with oauth1 configuration
