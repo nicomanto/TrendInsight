@@ -1,4 +1,4 @@
-name: build-test-delploy-lambda
+name: build-test-deploy-lambda
 on: push
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
         with:
           path: TrendInsight
           key: ${{ runner.os }}-TrendInsight-${{ github.sha }}
-  delploy-lambda:
+  deploy-lambda:
     name: deploy lambda function
     runs-on: ubuntu-latest
     needs: build-tests
