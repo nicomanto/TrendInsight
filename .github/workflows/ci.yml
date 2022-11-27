@@ -34,7 +34,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: TrendInsight
-          key: ${{ runner.os }}-TrendInsight-${{ hashFiles('TrendInsight') }}
+          key: ${{ runner.os }}-TrendInsight
           restore-keys: ${{ runner.os }}-TrendInsight-${{ hashFiles('TrendInsight') }}
   delploy-lambda:
     name: deploy lambda function
@@ -49,8 +49,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: TrendInsight
-          key: ${{ runner.os }}-TrendInsight-${{ hashFiles('TrendInsight') }}
-          restore-keys: ${{ runner.os }}-TrendInsight-
+          key: ${{ runner.os }}-TrendInsight
+          restore-keys: ${{ runner.os }}-TrendInsight
       # Zip build for lambda push
       - name: Zip build
         run: zip TrendInsight.zip TrendInsight
