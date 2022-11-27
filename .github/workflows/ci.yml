@@ -34,7 +34,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: TrendInsight
-          key: ${{ runner.os }}-TrendInsight
+          key: ${{ runner.os }}-TrendInsight-${{ github.sha }}
   delploy-lambda:
     name: deploy lambda function
     runs-on: ubuntu-latest
@@ -48,8 +48,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: TrendInsight
-          key: ${{ runner.os }}-TrendInsight
-          restore-keys: ${{ runner.os }}-TrendInsight
+          key: ${{ runner.os }}-TrendInsight-${{ github.sha }}
       # Zip build for lambda push
       - name: Zip build
         run: zip TrendInsight.zip TrendInsight
