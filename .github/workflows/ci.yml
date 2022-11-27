@@ -35,7 +35,6 @@ jobs:
         with:
           path: TrendInsight
           key: ${{ runner.os }}-TrendInsight
-          restore-keys: ${{ runner.os }}-TrendInsight-${{ hashFiles('TrendInsight') }}
   delploy-lambda:
     name: deploy lambda function
     runs-on: ubuntu-latest
