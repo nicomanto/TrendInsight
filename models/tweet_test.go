@@ -28,6 +28,7 @@ func TestCorrectTweetStructure(t *testing.T) {
 	r.Contains(postedString, tweet.Hashtag)
 	r.Contains(postedString, tweet.Text[:(len(tweet.Text)/2)]+"...")
 	r.Contains(postedString, tweet.Author)
+	r.Contains(postedString, "#TrendInsight")
 	r.NotContains(postedString, tweet.Lang)
 	r.Contains(postedString, likesS)
 	r.Contains(postedString, tweet.Ts.Format(time.RFC822))
