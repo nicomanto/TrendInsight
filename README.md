@@ -6,7 +6,7 @@ You can find bot at this page: [https://twitter.com/insight_trend](https://twitt
 
 Bot posts info of the most popular tweets about the most popular trend. Posted tweets have this format:
 ```
-#DummyHashtag
+#DummyHashtag #TrendInsight
 Tweet: trucated tweet's text
 Author: Dummy
 Likes: 2513
