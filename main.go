@@ -74,8 +74,10 @@ func handleLamdaEvent() (*models.LambdaResponse, error) {
 	// create tweet msg
 	timestampTweet, err := mostTweet.CreatedAtTime()
 	if err != nil {
-		gomailClient.SendErrorMail([]string{userToNotifyInError}, err.Error())
-		return nil, err
+		// default created_at to time.Now() if tweet doesn't have ts
+		timestampTweet = time.Now()
+		//gomailClient.SendErrorMail([]string{userToNotifyInError}, err.Error())
+		//return nil, err
 	}
 	trendName := mostTrend.Name
 	if !strings.HasPrefix(trendName, "#") {
