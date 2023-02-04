@@ -75,6 +75,7 @@ func handleLamdaEvent() (*models.LambdaResponse, error) {
 	timestampTweet, err := mostTweet.CreatedAtTime()
 	if err != nil {
 		// default created_at to time.Now() if tweet doesn't have ts
+		logrus.Warning("created_at to time now")
 		timestampTweet = time.Now()
 		//gomailClient.SendErrorMail([]string{userToNotifyInError}, err.Error())
 		//return nil, err
